@@ -1,0 +1,65 @@
+﻿@model repository_pattern.Models.Student
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div>
+        <h4>Student</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Roll)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Roll)
+            </dd>
+        
+        </dl>
+    </div>
+    <h3>Products</h3>
+    <table border="1">
+        @foreach (var item in Model.Products)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                 
+                <td>
+                    <a href="/Products/Edit/?Id=@item.ID"> Edit</a>
+                    <a href="/Products/Delete/?Id=@item.ID&owner=@Model.ID"> Delete</a>
+                    <a href="/Products/Details/?Id=@item.ID"> Details</a>
+                </td>
+            </tr>
+        }
+    </table>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+    <a class="btn btn-primary" href="/Products/AddNew/?owner=@Model.ID">Add new product!</a>
+</body>
+</html>

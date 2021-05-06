@@ -1,0 +1,50 @@
+﻿@model repository_pattern.Models.Product
+
+@{
+    Layout = null;
+    int x = ViewBag.owner;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+     <form id="add">
+         <label for="name"> name</label>
+         <input id="name" name="name" />
+         <button type="submit"> go!</button>
+     </form>
+    
+     
+</body>
+
+<script>
+    var x =@x;
+    $("#add").submit((e) => {
+        e.preventDefault();
+        $.ajax({
+            url: "/Products/Addnew",
+            contentType: "application/json",
+            method: "POST",
+            data: JSON.stringify({
+                Name: document.getElementById("name").value,
+                OwnerID: x
+            }),
+            success: (res) => {
+                location.href = "/Student/Details/?Id=" + x;
+            }
+        })
+    })
+    
+
+</script>
+</html>
