@@ -8,10 +8,10 @@ using System.Web.Mvc;
 
 namespace repository_pattern.Controllers
 {
-     public class ProductsController : Controller
+    public class ProductsController : Controller
     {
         
-         ProductRepository repository = new ProductRepository();
+        ProductRepository repository = new ProductRepository();
         // GET: Products
 
         public ActionResult Details(int Id)

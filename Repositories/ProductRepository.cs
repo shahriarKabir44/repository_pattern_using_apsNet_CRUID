@@ -8,11 +8,5 @@ namespace repository_pattern.Repositories
 {
     public class ProductRepository:Repository<Product>
     {
-        public List<Product> getTop(int num)
-        {
-            List<Product> tm = this.GetAll().OrderByDescending(x => x.ID).Take (num).ToList();
-            return tm;
-
-        }
     }
 }
