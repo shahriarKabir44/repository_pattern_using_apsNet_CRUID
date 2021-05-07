@@ -10,9 +10,11 @@ namespace repository_pattern.Repositories
     {
         public List<Product> getTop(int num)
         {
-            List<Product> tm = this.GetAll().OrderByDescending(x => x.ID).Take (num).ToList();
-            return tm;
-
+            return this.GetAll().OrderByDescending(x => x.ID).Take(num).ToList();
+        }
+        public List<Product> getByOwner(int owner)
+        {
+            return this.GetAll().Where(x => x.OwnerID == owner).ToList();
         }
     }
 }

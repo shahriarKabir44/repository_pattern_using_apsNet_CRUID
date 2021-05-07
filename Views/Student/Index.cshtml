@@ -8,40 +8,222 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
     <p>
         @Html.ActionLink("Create New", "Create")
     </p>
-    <table class="table" border="4">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Roll)
-            </th>
-            <th></th>
-        </tr>
-    
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Roll)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-                @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-            </td>
-        </tr>
-    }
-    
-    </table>
+    <div class="container">
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Roll)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Roll)
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" onclick="edit(@item.ID)"> Edit </button>
+                        <button class="btn btn-primary" onclick="details(@item.ID)"> Details </button>
+                        <button class="btn btn-primary" onclick="Delete(@item.ID)"> Delete </button>
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+
+        <div class="modal" id="edit-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h1 class="modal-title">Edit</h1>
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="card">
+                            <form id="editForm">
+                                <div class="form-group">
+                                    <label for="name"> name</label>
+                                    <input id="nameEdit" name="name" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="roll"> roll</label>
+                                    <input id="rollEdit" name="roll" />
+                                </div>
+
+                                <button type="submit"> Update!</button>
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="details-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h1 class="modal-title">Details</h1>
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-header">Student Details</div>
+                            <div class="card-body">
+                                <table class="table table-striped">
+                                    <tr> <td> <b>Name</b> </td>  <td> <p id="detailsName"> </p> </td></tr>
+                                    <tr> <td> <b>Roll</b> </td>  <td> <p id="detailsRoll"> </p> </td></tr>
+                                </table>
+                            </div>
+                            <div class="card-footer">
+                                <h3>Products owned</h3>
+                                <table  class="table table-striped">
+                                    <tr> <th> <b>Name</b> </th>   </tr>
+                                    <tbody  id="ownedList">
+
+
+                                    </tbody>
+                                    
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+
+
+
 </html>
+<script>
+    function getel(x) {
+        return document.getElementById(x);
+    }
+    function getajax(url) {
+        var dat = {
+            url: url,
+            contentType:"application/json"
+        }
+        return dat
+    }
+
+    function postAjax(url, data) {
+        var dat = {
+            url: url,
+            method: 'POST',
+            data: JSON.stringify(data),
+            contentType: "application/json"
+        }
+        return dat
+    }
+    var selectedToEdit = -1;
+    function edit(x) {
+        $.ajax({
+            ...getajax(`/Student/Details/${x}`),
+            success: (res) => {
+                selectedToEdit = x;
+                $('#edit-modal').modal({ show: true });
+            }
+        })
+    }
+    function clearForm(id) {
+        var root = getel(id);
+        for (let n = 0; n < root.childElementCount; n++) {
+            try {
+                root.children[n].value = ''
+            } catch (e) {
+
+            }
+        }
+    }
+    getel('editForm').onsubmit = (e) => {
+        e.preventDefault();
+        var data = {
+            "Name": getel('nameEdit').value,
+            "Roll": getel('rollEdit').value,
+            "ID": selectedToEdit
+        }
+        $.ajax({
+            ...postAjax('/Student/UpdateStudent', data),
+            success: (res) => {
+                window.location.reload();
+            }
+        })
+    }
+
+    var selectedStudent = -1;
+
+
+    function details(x) {
+        selectedStudent = x;
+        $.ajax({
+            ...getajax(`/Student/Details/${x}`),
+            success: (res) => {
+                getel('detailsRoll').innerHTML = res.Roll;
+                getel('detailsName').innerHTML = res.Name;
+
+                $.ajax({
+                    ...getajax(`/Products/GetProductsOf/?owner=${x}`),
+                    success: (res) => {
+                        var root = getel('ownedList')
+                        root.innerHTML = ''
+                        for (let n = 0; n < res.length; n++) {
+                            root.innerHTML +=`<tr> 
+                                    <td> ${res[n].Name} </td> 
+                                    <td>
+                                        <button class="btn btn-primary">Edit</button>
+                                        <button class="btn btn-danger">Delete</button>
+                                    </td> </tr>` 
+                        }
+                        $('#details-modal').modal()
+                    }
+                })
+            }
+        })
+        
+    }
+</script>

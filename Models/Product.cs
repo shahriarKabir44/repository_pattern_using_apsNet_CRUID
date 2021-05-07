@@ -11,11 +11,14 @@ namespace repository_pattern.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Product
     {
         public int ID { get; set; }
+        [Required]
         public string Name { get; set; }
+        
         public int OwnerID { get; set; }
     
         public virtual Student Student { get; set; }

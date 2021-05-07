@@ -8,17 +8,23 @@ using System.Web.Mvc;
 
 namespace repository_pattern.Controllers
 {
-     public class ProductsController : Controller
-    {
+       
         
-         ProductRepository repository = new ProductRepository();
-        // GET: Products
+      public class ProductsController : Controller
+    {
+        ProductRepository repository = new ProductRepository();
+         // GET: Products
 
         public ActionResult Details(int Id)
         {
             return View(repository.Get(Id));
         }
-
+        [HttpGet]
+        public Object GetProductsOf(int owner)
+        {
+            var x = repository.getByOwner(owner);
+            return Json(x, JsonRequestBehavior.AllowGet );
+        }
         [HttpGet]
         public ActionResult Delete(int Id,int owner)
         {
@@ -33,10 +39,19 @@ namespace repository_pattern.Controllers
         }
 
         [HttpPost]
-        public Object Addnew(Product pd)
+          
+         public ActionResult Addnew(Product pd)
         {
-            repository.Insert(pd);
-            return Json(repository.GetAll().ToArray()).Data;
-        }
+            if (ModelState.IsValid)
+            {
+                repository.Insert(pd);
+
+                return Redirect("/Student/Index");
+            }
+            else
+            {
+                return Redirect("/");
+            }
+         }
     }
 }

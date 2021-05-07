@@ -10,8 +10,18 @@ namespace repository_pattern.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {
+        InventoryDBEntities context;
+        public Repository()
+        {
+            this.context=new InventoryDBEntities();
+            this.context.Database.CommandTimeout = 180;
+            this.context.Configuration.LazyLoadingEnabled = false;
+            this.context.Configuration.ProxyCreationEnabled = false;
+            //dbContext.Configuration.AutoDetectChangesEnabled = false;
+            //dbContext.Configuration.ValidateOnSaveEnabled = false;
+        }
 
-        InventoryDBEntities context = new InventoryDBEntities();
+
         public void Delete(int Id)
         {
             this.context.Set<T>().Remove(this.Get(Id));
