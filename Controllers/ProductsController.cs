@@ -13,7 +13,13 @@ namespace repository_pattern.Controllers
       public class ProductsController : Controller
     {
         ProductRepository repository = new ProductRepository();
-         // GET: Products
+=========
+     public class ProductsController : Controller
+    {
+        
+         ProductRepository repository = new ProductRepository();
+>>>>>>>>> Temporary merge branch 2
+        // GET: Products
 
         public ActionResult Details(int Id)
         {
@@ -39,19 +45,17 @@ namespace repository_pattern.Controllers
         }
 
         [HttpPost]
-          
-         public ActionResult Addnew(Product pd)
+<<<<<<<<< Temporary merge branch 1
+        public ActionResult Addnew(Product pd)
         {
-            if (ModelState.IsValid)
-            {
-                repository.Insert(pd);
-
-                return Redirect("/Student/Index");
-            }
-            else
-            {
-                return Redirect("/");
-            }
-         }
+            repository.Insert(pd);
+            return Redirect("/Student/Index");
+=========
+        public Object Addnew(Product pd)
+        {
+            repository.Insert(pd);
+            return Json(repository.GetAll().ToArray()).Data;
+>>>>>>>>> Temporary merge branch 2
+        }
     }
 }
