@@ -166,6 +166,8 @@
             ...getajax(`/Student/Details/${x}`),
             success: (res) => {
                 selectedToEdit = x;
+                getel('nameEdit').value = res.Name
+                getel('rollEdit').value = res.Roll
                 $('#edit-modal').modal({ show: true });
             }
         })
